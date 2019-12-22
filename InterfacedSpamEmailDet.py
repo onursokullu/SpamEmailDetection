@@ -9,6 +9,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from nltk.stem import PorterStemmer
+from nltk.tokenize import word_tokenize
 
 
 df = pd.read_csv("spam.csv")
@@ -18,12 +20,18 @@ df.loc[df["Category"] == 'spam',"Category",] =0
 x= df["Message"]
 y=df["Category"]
 
-xTrain, xTest, yTrain, yTest = train_test_split(x, y, test_size=0.2,train_size=0.8, random_state=4)
+xTrain, xTest, yTrain, yTest = train_test_split(x, y, test_size=0.2,train_size=0.8, random_state=42)
 
 
 def onClick():
     input = tBox.get("1.0",tk.END)
     testInput = pd.Series(input)
+    #tokenizing and stemming
+    #xTraTokenized=xTrain.apply(word_tokenize)
+    #ps = PorterStemmer()
+    #xTraStemmed = xTraTokenized.apply(lambda x : [ps.stem(xTraTokenized) for xTraTokenized in x])
+    #xTraJoin = xTraStemmed.apply(lambda x : " ".join(x))
+
     #vectorizing the test training data and test input
     tfvec = TfidfVectorizer(analyzer='word', lowercase = True)
     xTrainFeat = tfvec.fit_transform(xTrain)
